@@ -23,12 +23,13 @@ public class ProController extends Controller{
 		String openId = getPara("openid");
 		//验证设备是否存在
 		String Dc_token = DiCloudUtil.GetToken();
-		if(DiCloudUtil.GetDevBasc(Dc_token,SSID)){
+		String r = DiCloudUtil.GetDevBasc(Dc_token,SSID);
+		if(null!= r){
 			//存在的话
 			List<Record> list= Db.find(" select id from sys_openid where openId = ? ", openId);
 			if(list.size()!=0){
 				String id = list.get(0).get("id");
-				int flag = Db.update(" update usr_pro set ssId = ? where oId = ? ", SSID, id);
+				int flag = Db.update(" update usr_pro set ssId = ? ,devSn = ? where oId = ? ", SSID,  r, id);
 				if(flag==1){
 					return_code="SUCCESS";
 					return_msg="绑定成功";

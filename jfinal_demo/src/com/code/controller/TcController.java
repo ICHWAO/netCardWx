@@ -32,8 +32,14 @@ public class TcController extends Controller{
 		res.putArray("return_msg", result);
 		renderText(res.GetResponse());
 	}
-	
-	public void pay(){
-		String token = getPara("token");
+	/**
+	 * 获取使用的流量
+	 */
+	public void getUseLl(){
+		
 	}
+	
+	/*public void pay(){
+		String token = getPara("token");
+	}*/
 }
