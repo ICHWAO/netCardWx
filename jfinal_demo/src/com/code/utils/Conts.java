@@ -1,11 +1,5 @@
 package com.code.utils;
 
-
-import java.util.Properties;
-
-
-import net.sf.json.JSONObject;
-
 public class Conts {
 	
 	/**
@@ -70,5 +64,37 @@ public class Conts {
     public static String body = "套餐购买";
     
 	
+    
+    
+    /***********************************我是一个可爱的分割线*********************************************/
+   
+    /**
+	 * diCould_Url
+	 */
+    public static final String DiCouldUrl="http://yueshiying.dimiccs.com:3080/";
+    
+    /**
+	 * 账号
+	 */
+    public static final String DO_MIAN = "yueshiying";
 	
+	/**
+	 * 账号
+	 */
+    public static final String USER = "ysyapi2";
+	
+	/**
+	 * 账号
+	 */
+    public static final String Passward = "123456";
+    
+    /**
+     * 调用token接口
+     */
+    public static final String Get_Dc_Token="api/v1/auth";
+    
+    /**
+     * 调用dev所有的设备信息
+     */
+    public static final String Get_Dec_basic="api/v1/devices/basic";
 }
