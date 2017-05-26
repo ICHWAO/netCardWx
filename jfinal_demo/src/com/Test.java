@@ -5,17 +5,14 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
 
-import com.code.utils.DiCloudTokenResponse;
-import com.code.utils.HttpInvoker;
+import com.code.utils.HttpRequest;
 import com.code.utils.MD5;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class Test {
 
 	private static String domain = "yueshiying";
 	private static String user = "ysyapi2";
 	private static String password = "123456";
-	private static ObjectMapper mapper = new ObjectMapper();
 	
 	public static void main(String[] args) throws Exception {
 		// TODO Auto-generated method stub
@@ -27,22 +24,10 @@ public class Test {
 
 		String url = "http://yueshiying.dimiccs.com:3080/api/v1/auth";
 		String hash = MD5.MD5Encode(domain + user + password + time);
-		String str = url+"?domain=" + domain + "&user=" + user + "&time=" + time + "&hash=" + hash;
-		HttpInvoker invoker = new HttpInvoker();
-		try {
-			int re = invoker.invoke(str, "get", null);
-			if (re == 200) {
-				DiCloudTokenResponse resp = mapper.readValue(invoker.getResult(), DiCloudTokenResponse.class);
-				if ("200".equals(resp.getErrorCode()))
-					System.out.println(resp.getToken());
-				else
-					System.out.println(resp.getErrorCode());
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		String param = "domain=" + domain + "&user=" + user + "&time=" + time + "&hash=" + hash;
+		String  result = HttpRequest.sendGet(url, param.replace(" ", "%20"));
+		System.out.println(result);
 	}
-
 	
 
 }
