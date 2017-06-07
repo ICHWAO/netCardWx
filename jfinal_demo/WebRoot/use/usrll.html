@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title></title>
+    <script src="../js/mui.min.js"></script>
+    <link href="../css/mui.min.css" rel="stylesheet"/>
+    <script src="../js/jquery-1.4.4.min.js"></script>
+    <script type="text/javascript" charset="UTF-8">
+      	mui.init();
+      	
+  		//截取浏览器URL后的参数
+      	var returns = "";
+		var url = location.search;
+		var theRequest = new Object(); 
+		if (url.indexOf("?") != -1) { 
+			var str = url.substr(1); 
+			strs = str.split("&"); 
+			for(var i = 0; i < strs.length; i ++) { 
+				theRequest[strs[i].split("=")[0]]=unescape(strs[i].split("=")[1]); 
+			} 
+		}
+      	//请求openID与token
+      	$.ajax({
+		    type:"post",
+		    url:"/com/getOpenId",
+		    dataType:'json',
+		    data:{code:theRequest.code,state:theRequest.state},
+		    success:function(data){
+		    	if(data.return_code == "SUCCESS"){
+		    		sessionStorage.openId = JSON.parse(data.return_msg).openid;
+		    		sessionStorage.access_token = JSON.parse(data.return_msg).access_token;
+		    	}else{
+		    		mui.toast('缓冲中.....');
+		    	}
+		    }
+		});
+		
+		$.ajax({
+		    type:"post",
+		    url:"/use/getUseLl",
+		    dataType:'json',
+		    data:{openid:sessionStorage.openId},
+		    success:function(data){
+		    	if(data.return_code == "SUCCESS"){
+		    		var str = data.return_msg;
+		    		var result = str.split("&");
+		    		$("#syll").val(result[0]);
+		    		$("#ssid").val(result[1]);
+		    	}else{
+		    		mui.toast('缓冲中.....');
+		    	}
+		    }
+		});
+		
+    </script>
+</head>
+<body>
+	<header class="mui-bar mui-bar-nav">
+		<h1 class="mui-title">流量使用情况</h1>
+	</header>
+	<div class="mui-content">
+		<div class="mui-input-row">
+			<label>设备SSID</label>
+			<input id="ssid" type="text" readonly="readonly" placeholder="设备ssid号">
+		</div>
+		
+		<div class="mui-input-row">
+			<label>剩余流量</label>
+			<input id="syll" type="text" readonly="readonly" placeholder="0.0">
+		</div> 
+	</div> 
+</body>
+</html>

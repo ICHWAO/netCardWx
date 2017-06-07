@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title></title>
+    <script src="../js/mui.min.js"></script>
+    <link href="../css/mui.min.css" rel="stylesheet"/>
+    <script src="../js/jquery-1.4.4.min.js"></script>
+    <script type="text/javascript" charset="UTF-8">
+      	mui.init();
+      	
+      	//截取浏览器URL后的参数
+      	var returns = "";
+		var url = location.search;
+		var theRequest = new Object(); 
+		if (url.indexOf("?") != -1) { 
+			var str = url.substr(1); 
+			strs = str.split("&"); 
+			for(var i = 0; i < strs.length; i ++) { 
+				theRequest[strs[i].split("=")[0]]=unescape(strs[i].split("=")[1]); 
+			} 
+		}
+      	//请求openID与token
+      	$.ajax({
+		    type:"post",
+		    url:"/com/getOpenId",
+		    dataType:'json',
+		    data:{code:theRequest.code,state:theRequest.state},
+		    success:function(data){
+		    	if(data.return_code == "SUCCESS"){
+		    		sessionStorage.openId = JSON.parse(data.return_msg).openid;
+		    		sessionStorage.access_token = JSON.parse(data.return_msg).access_token;
+		    		getList()
+		    	}else{
+		    		mui.toast('缓冲中.....');
+		    	}
+		    }
+		});
+		//请求购买历史数据
+		function getList(){
+			$.ajax({
+			    type:"post",
+			    url:"/gmjl/getList",
+			    dataType:'json',
+			    data:{openid:sessionStorage.openId },
+			    success:function(data){
+			    	if(data.return_code == "SUCCESS"){
+			    		var obj = data.return_msg;
+			    		var length = obj.length;
+			    		var html = "";
+		    		 	for(var i = 0; i < length; i++){
+	    		 			var o = obj[i];
+	    		 			html += "<li class=\"mui-table-view-cell mui-media\">"
+							html += "<img class=\"mui-media-object mui-pull-right\" src=\"../images/muwu.jpg\">";
+							html +=	"<div class=\"mui-media-body\">"
+							html +=	o.tcmc+"套餐";
+							html +=	"<p class='mui-ellipsis'>时间:"+format(o.gmsj)+"&nbsp;&nbsp;价格:"+o.gmjg+"RMB</p>"
+							html +="</div>"
+							html +="</li>"
+		    		 	}
+						$("#ListGmjl").append(html);
+			    	}else{
+			    		mui.toast('缓冲中.....');
+			    	}
+			    }
+			});
+		}
+		
+		function add0(m){return m<10?'0'+m:m }
+		function format(shijianchuo){
+			//shijianchuo是整数，否则要parseInt转换
+			var time = new Date(shijianchuo);
+			var y = time.getFullYear();
+			var m = time.getMonth()+1;
+			var d = time.getDate();
+			var h = time.getHours();
+			var mm = time.getMinutes();
+			var s = time.getSeconds();
+			return y+'-'+add0(m)+'-'+add0(d)+' '+add0(h)+':'+add0(mm)+':'+add0(s);
+		}
+    </script>
+</head>
+<body>
+	<header class="mui-bar mui-bar-nav">
+		<h1 class="mui-title">购买记录</h1>
+	</header>
+	<div class="mui-content">
+		<div class="mui-card" style="margin-bottom: 35px;">
+			<ul id="ListGmjl" class="mui-table-view">
+				
+			</ul>
+		</div>
+	</div>
+</body>
+</html>
