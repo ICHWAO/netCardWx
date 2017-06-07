@@ -5,7 +5,12 @@ public class Conts {
 	/**
     * 商户号
     */
-	public static final String  MCH_ID = "13000000000001";
+	public static final String  MCH_ID = "1481075612";
+	
+	/**
+    * 商户号
+    */
+	public static final String  MCH_KEY = "lc990f1345a5f432ab4331982e412bxc";
 
 	/**
 	 * 应用ID
@@ -57,7 +62,11 @@ public class Conts {
     */
     public static final String  PrepayUrl = "https://api.mch.weixin.qq.com/pay/unifiedorder";
 	
-		
+	/**
+	 * 微信回调url	
+	 */
+    public static final String CALLBACK = "http://www.mlbwifi.cn/tc/callback";
+    
     /**
      * 商品描述
      */
@@ -97,4 +106,9 @@ public class Conts {
      * 调用dev所有的设备信息
      */
     public static final String Get_Dec_basic="api/v1/devices/basic";
+    
+    /**
+     * 获取设备使用情况
+     */
+    public static final String Get_Dev_UseInfo = "api/v1/devices/account";
 }

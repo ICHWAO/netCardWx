@@ -1,5 +1,6 @@
 package com.code.utils;
 
+import java.io.UnsupportedEncodingException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -50,6 +51,22 @@ public class DiCloudUtil {
 			e.printStackTrace();
 		}
 		return res;
+	}
+	
+	/**
+	 * 获取设备本月使用情况
+	 */
+	public static String GetDevUesInfo(String token,String devSn){
+		try {
+			String param = "token=" + token + "&devSn=" + devSn;
+			String result = HttpRequest.sendGet(Conts.DiCouldUrl + Conts.Get_Dev_UseInfo,param);
+			JSONObject jo = JSONObject.fromObject(result);
+			return jo.getString("usedFlow");
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
 	
 	/**

@@ -15,10 +15,13 @@ public class ComController extends Controller{
 	public void getOpenId() throws Exception {
 		String code = getPara("code");
 		Responser responser = new Responser();
-		/*String url = Conts.getOpenIdByWxUrl;
-		String param = "appid=wxb8bda7d9ab4c5fb3&secret=3380d24c323817953b6d621f6fc49f62&code=" + code
+		String url = Conts.getOpenIdByWxUrl;
+		String param = "appid="+Conts.APP_ID+"&secret="+Conts.APPSECRET+"&code=" + code
 				+ "&grant_type=authorization_code";
-		String ret = HttpRequest.sendGet(url, param);
+	/*	String ret = HttpRequest.sendGet(url, param);
+		System.out.println("====================================================================================");
+		System.out.println("====>openid:"+ret);
+		System.out.println("====================================================================================");
 		JSONObject oj =  JSONObject.fromObject(ret);
 		String openid = oj.getString("openid");*/
 		String openid = "123123";

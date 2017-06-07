@@ -1,9 +1,11 @@
 package com.code.common;
 
 import com.code.controller.ComController;
+import com.code.controller.GmjlController;
 import com.code.controller.IndexController;
 import com.code.controller.ProController;
 import com.code.controller.TcController;
+import com.code.controller.UseFlowController;
 import com.jfinal.config.Constants;
 import com.jfinal.config.Handlers;
 import com.jfinal.config.Interceptors;
@@ -58,6 +60,8 @@ public class Config extends JFinalConfig {
 		me.add("/pro", ProController.class);			// 第三个参数省略时默认与第一个参数值相同，在此即为 "/blog"
 		me.add("/tc",TcController.class);
 		me.add("/com",ComController.class);
+		me.add("/use",UseFlowController.class);
+		me.add("/gmjl",GmjlController.class);
 	}
 	
 	public void configEngine(Engine me) {

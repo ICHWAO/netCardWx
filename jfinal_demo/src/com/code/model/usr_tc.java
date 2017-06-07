@@ -9,9 +9,9 @@ public class usr_tc implements Serializable{
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	public String id;		//主键
-	public String tcmc;		//套餐名称
-	public double lsjg;		//零售价格
+	private String id;		//主键
+	private String tcmc;		//套餐名称
+	private double lsjg;		//零售价格
 	
 	
 	public String getId() {
