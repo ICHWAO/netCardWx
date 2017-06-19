@@ -1,19 +1,26 @@
 package com;
 
-import java.security.SecureRandom;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import com.code.model.stop2start;
+import com.code.utils.Conts;
+import com.code.utils.DiCloudUtil;
+import com.code.utils.HttpRequest;
 
-import com.code.utils.PayUtil;
+import net.sf.json.JSONObject;
 
 public class Test {
-	private static SecureRandom random = new SecureRandom();
 	
 	public static void main(String[] args) throws Exception {
 		// TODO Auto-generated method stub
-		for (int i = 0; i < 30; i++) {
-			System.out.println(PayUtil.getOrderId());
-		}
+		String array [] = new String [1];
+		array[0] = "db02-6715-0100-2044";
+		stop2start ss = new stop2start();
+		ss.setAppLimit("1");
+		ss.setWebLimit("1");
+		ss.setDevSn(array);
+		ss.setRxSpeed("");
+		ss.setTxSpeed("");
+		ss.setToken(DiCloudUtil.GetToken());
+		String result = HttpRequest.sendPost(Conts.DiCouldUrl+Conts.open2Stop, JSONObject.fromObject(ss).toString());
+		System.out.println(result);	
 	}
 }

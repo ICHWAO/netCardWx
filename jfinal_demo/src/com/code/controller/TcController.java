@@ -14,8 +14,11 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.dom4j.DocumentException;
 
+import com.code.model.stop2start;
 import com.code.model.usr_tc;
 import com.code.utils.Conts;
+import com.code.utils.DiCloudUtil;
+import com.code.utils.HttpRequest;
 import com.code.utils.IdGen;
 import com.code.utils.PayUtil;
 import com.code.utils.Responser;
@@ -24,6 +27,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.jfinal.core.Controller;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
+
+import net.sf.json.JSONObject;
 
 public class TcController extends Controller {
 
@@ -67,13 +72,15 @@ public class TcController extends Controller {
 		map.put("paySign", PayUtil.getSign(map));
 		resp.put("return_code", "SUCCESS");
 		resp.putArray("return_msg", map);
+		Record re = Db.findFirst(" select * from sys_openid where openId = ? " , openId);
 		//统一下单后向购买记录表插入数据
 		Record usr_buy = new Record()
 				.set("id", IdGen.uuid())
 				.set("tcid", tcId)
 				.set("gmsj", new Date())
-				.set("oId", openId)
-				.set("zt", "0");
+				.set("oId", re.getStr("id"))
+				.set("zt", "0")
+				.set("order", oid);
 		Db.save("usr_buy", usr_buy);
 		renderText(resp.GetResponse());
 	}
@@ -93,12 +100,28 @@ public class TcController extends Controller {
         //解析xml成map  
         Map<String, String> map = new HashMap<String, String>();  
         map = XmlUtils.xmlBody2map(sb.toString(),"xml");
-        if(map.size()!=0){
-        	if("SUCCESS".equals(map.get("return_code"))){
-        		//支付成功 修改状态
-    			Db.update(" update usr_buy set zt= ? where oId= ?" , "1", map.get("out_trade_no"));
-        	}
+    	if("SUCCESS".equals(map.get("return_code"))){
+    		//支付成功 修改状态
+			int flag = Db.update(" update usr_buy u set u.zt= ? where u.order = ? " , 1, map.get("out_trade_no"));
+
+			String orderId = map.get("out_trade_no");
+			Record re = Db.findFirst(" select * from usr_pro where oId = (select u.oId from usr_buy u where u.order = ? ) " , orderId);
+			String array [] = new String [1];
+			array[0] = re.getStr("devSn");
+			stop2start ss = new stop2start();
+			ss.setAppLimit("0");
+			ss.setWebLimit("0");
+			ss.setDevSn(array);
+			ss.setRxSpeed("");
+			ss.setTxSpeed("");
+			ss.setToken(DiCloudUtil.GetToken());
+			String result = HttpRequest.sendPost(Conts.DiCouldUrl+Conts.open2Stop, JSONObject.fromObject(ss).toString());
+			System.out.println(result);	
         }
+        
+        
+        
+        renderNull();
 	}
 	
 	private int num (){

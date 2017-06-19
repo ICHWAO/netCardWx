@@ -24,7 +24,7 @@ public class GmjlController extends Controller {
 		List<usr_buy> rl = new ArrayList<usr_buy>();
 			// 查询购买记录
 			List<Record> result = Db.find(
-					" select ub.*,ut.tcmc,ut.lsjg  from usr_buy ub RIGHT JOIN usr_tc ut on ub.tcid = ut.id where ub.oId = ? ORDER BY ub.gmsj desc ",
+					" select ub.*,ut.tcmc,ut.lsjg  from usr_buy ub RIGHT JOIN usr_tc ut on ub.tcid = ut.id where ub.oId = ? and ub.zt = 1 ORDER BY ub.gmsj desc ",
 					openId);
 			int size = result.size();
 			if (result.size() != 0) {

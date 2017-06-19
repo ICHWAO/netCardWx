@@ -78,8 +78,9 @@ public class Config extends JFinalConfig {
 	public void configPlugin(Plugins me) {
 		// 配置C3p0数据库连接池插件
 		DruidPlugin druidPlugin = createDruidPlugin();
+		QuartzPlugin quartPlugin = new QuartzPlugin();
 		me.add(druidPlugin);
-		
+		me.add(quartPlugin);
 		// 配置ActiveRecord插件
 		ActiveRecordPlugin arp = new ActiveRecordPlugin(druidPlugin);
 		// 所有映射在 MappingKit 中自动化搞定

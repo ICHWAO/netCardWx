@@ -111,4 +111,9 @@ public class Conts {
      * 获取设备使用情况
      */
     public static final String Get_Dev_UseInfo = "api/v1/devices/account";
+    
+    /**
+     * 设备流量关停
+     */
+    public static final String open2Stop = "api/v1/devices/net";
 }

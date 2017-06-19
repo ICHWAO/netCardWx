@@ -18,13 +18,13 @@ public class ComController extends Controller{
 		String url = Conts.getOpenIdByWxUrl;
 		String param = "appid="+Conts.APP_ID+"&secret="+Conts.APPSECRET+"&code=" + code
 				+ "&grant_type=authorization_code";
-	/*	String ret = HttpRequest.sendGet(url, param);
+		String ret = HttpRequest.sendGet(url, param);
 		System.out.println("====================================================================================");
 		System.out.println("====>openid:"+ret);
 		System.out.println("====================================================================================");
 		JSONObject oj =  JSONObject.fromObject(ret);
-		String openid = oj.getString("openid");*/
-		String openid = "123123";
+		String openid = oj.getString("openid");
+		//String openid = "123123";
 		//对OpenId进行处理
 		long flag =  Db.queryLong(" select count(1) from sys_openid where openId = ? ",openid);
 		 //新的openID
@@ -45,8 +45,8 @@ public class ComController extends Controller{
 		}
 		
 		responser.put("return_code", "SUCCESS");
-		//responser.put("return_msg", ret);
-		responser.put("return_msg", "{\"access_token\":\"CNdeKFbGip_Iocjmxl7Ly-1uX4RGjOTi5O_pGmBY_LV2TAXbbJzoYb7Em7EfZxySdj8H7Wwxb8J8-PIWS525ic8i4rrDVOaclDVagAIY0G4\",\"expires_in\":7200,\"refresh_token\":\"-ncb2YFS4UOEXLIlH2pXearkOp78ypsMaIJXYj_2ybitkNbntdCgfeTGmgBiDLOlElBzQSxzMfSWZlnel1x3q96ebYf_rMIelJ7UBPohw_w\",\"openid\":\"123123\",\"scope\":\"snsapi_base\"}");
+		responser.put("return_msg", ret);
+		//responser.put("return_msg", "{\"access_token\":\"CNdeKFbGip_Iocjmxl7Ly-1uX4RGjOTi5O_pGmBY_LV2TAXbbJzoYb7Em7EfZxySdj8H7Wwxb8J8-PIWS525ic8i4rrDVOaclDVagAIY0G4\",\"expires_in\":7200,\"refresh_token\":\"-ncb2YFS4UOEXLIlH2pXearkOp78ypsMaIJXYj_2ybitkNbntdCgfeTGmgBiDLOlElBzQSxzMfSWZlnel1x3q96ebYf_rMIelJ7UBPohw_w\",\"openid\":\"123123\",\"scope\":\"snsapi_base\"}");
 		renderText(responser.GetResponse());
 		//System.out.println("---------------------------------------获取open_id" + ret);
 	}
